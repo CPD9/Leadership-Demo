@@ -9,7 +9,7 @@
  * https://clerk.com/docs/nextjs/guides/billing/for-b2c
  */
 
-import type { Auth } from "@clerk/nextjs/server";
+import type { SessionAuthObject } from "@clerk/backend";
 import { convex } from "@/lib/convex-client";
 import { api } from "@/convex/_generated/api";
 import {
@@ -44,7 +44,7 @@ export interface UploadValidationResult {
  * @returns Validation result with details
  */
 export async function checkUploadLimits(
-  auth: Auth,
+  auth: SessionAuthObject,
   userId: string,
   fileSize: number,
   duration?: number
@@ -115,7 +115,7 @@ export async function checkUploadLimits(
  * @returns True if user has access to feature
  */
 export function checkFeatureAccess(
-  auth: Auth,
+  auth: SessionAuthObject,
   feature: FeatureName
 ): boolean {
   const { has } = auth;

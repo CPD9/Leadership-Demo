@@ -8,8 +8,14 @@
 import { Lock, Sparkles, Crown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PLAN_FEATURES, PLAN_NAMES, PLAN_PRICES, type PlanName } from "@/lib/tier-config";
-import { getMinimumPlanForFeature, type FeatureName } from "@/lib/tier-utils";
+import {
+  PLAN_FEATURES,
+  PLAN_NAMES,
+  PLAN_PRICES,
+  type FeatureName,
+  type PlanName,
+} from "@/lib/tier-config";
+import { getMinimumPlanForFeature } from "@/lib/tier-utils";
 
 interface UpgradePromptProps {
   feature: string; // Display name (e.g., "Social Posts")

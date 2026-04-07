@@ -22,19 +22,15 @@ export function CompactProgress({
 }: CompactProgressProps) {
   const [progress, setProgress] = useState(0);
 
-  const isTranscribing = jobStatus.transcription === "running";
+  const isTranscribing = jobStatus?.transcription === "running";
 
-  // Count completed content generation steps (all 6 outputs)
-  const contentSteps = [
-    jobStatus.keyMoments,
-    jobStatus.summary,
-    jobStatus.social,
-    jobStatus.titles,
-    jobStatus.hashtags,
-    jobStatus.youtubeTimestamps,
+  // Schema tracks two coarse phases: transcription + content generation
+  const phaseComplete = [
+    jobStatus?.transcription === "completed",
+    jobStatus?.contentGeneration === "completed",
   ];
-  const completedSteps = contentSteps.filter((s) => s === "completed").length;
-  const totalSteps = contentSteps.length;
+  const completedSteps = phaseComplete.filter(Boolean).length;
+  const totalSteps = phaseComplete.length;
 
   useEffect(() => {
     if (!isTranscribing) {
