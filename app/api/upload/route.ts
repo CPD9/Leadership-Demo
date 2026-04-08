@@ -16,7 +16,6 @@ import { type HandleUploadBody, handleUpload } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { apiError } from "@/lib/api-utils";
-import { getBlobReadWriteToken } from "@/lib/blob-env";
 import { ALLOWED_AUDIO_TYPES } from "@/lib/constants";
 import { PLAN_LIMITS } from "@/lib/tier-config";
 
@@ -41,17 +40,9 @@ export async function POST(request: Request): Promise<NextResponse> {
       maxFileSize = PLAN_LIMITS.pro.maxFileSize;
     }
 
-    const blobToken = getBlobReadWriteToken();
-    if (!blobToken) {
-      return apiError(
-        "Blob storage is not configured (set LEAD_READ_WRITE_TOKEN or BLOB_READ_WRITE_TOKEN)",
-        500,
-      );
-    }
-
     // Generate pre-signed upload URL with plan-based constraints
+    // Requires BLOB_READ_WRITE_TOKEN (see .env.example)
     const jsonResponse = await handleUpload({
-      token: blobToken,
       body,
       request,
       onBeforeGenerateToken: async () => ({

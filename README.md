@@ -35,7 +35,7 @@ This project documents an **independent study** in applied software: how modern 
 
 1. **Install dependencies** (e.g. `pnpm install`).
 2. **Environment:** copy `.env.example` to `.env.local` and fill values. Never commit `.env.local`.
-3. **Vercel Blob:** use the linked **“lead”** store; set **`LEAD_READ_WRITE_TOKEN`** in `.env.local` (same value as in Vercel → Storage → lead → token). `BLOB_READ_WRITE_TOKEN` is optional fallback. Without a valid token, uploads can fail with **400** or token errors.
+3. **Vercel Blob:** add **`BLOB_READ_WRITE_TOKEN`** to `.env.local` (read/write token from your Blob store). If the dashboard only exposes a store-specific variable name, use the same token value under `BLOB_READ_WRITE_TOKEN` here and in Vercel. Without a valid token, uploads can fail with **400** or token errors.
 4. **Run services** (typically separate terminals):
    - Convex: `pnpm convex dev`
    - Inngest dev: `npx inngest-cli@latest dev`
