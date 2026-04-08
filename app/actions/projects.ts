@@ -23,6 +23,7 @@ import { del } from "@vercel/blob";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { inngest } from "@/inngest/client";
+import { getBlobReadWriteToken } from "@/lib/blob-env";
 import { convex } from "@/lib/convex-client";
 import { checkUploadLimits } from "@/lib/tier-utils";
 
@@ -209,7 +210,8 @@ export async function deleteProjectAction(projectId: Id<"projects">) {
     // Delete file from Vercel Blob
     // If this fails, we've already deleted from DB - log but don't throw
     try {
-      await del(result.inputUrl);
+      const blobToken = getBlobReadWriteToken();
+      await del(result.inputUrl, blobToken ? { token: blobToken } : {});
     } catch (blobError) {
       console.error("Failed to delete file from Blob storage:", blobError);
       // Don't throw - project is already deleted from database
