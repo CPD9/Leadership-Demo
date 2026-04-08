@@ -111,9 +111,20 @@ export function PodcastUploader() {
       }
 
       // Step 2: Upload file to Vercel Blob
+      // Explicit contentType: empty or octet-stream File.type fails Blob token allow-list (400 on PUT).
+      const ext = selectedFile.name.split(".").pop()?.toLowerCase();
+      const contentTypeFallback =
+        ext === "mp3"
+          ? "audio/mpeg"
+          : ext === "wav"
+            ? "audio/wav"
+            : ext === "m4a"
+              ? "audio/mp4"
+              : "application/octet-stream";
       const blob = await upload(selectedFile.name, selectedFile, {
         access: "public",
         handleUploadUrl: "/api/upload",
+        contentType: selectedFile.type || contentTypeFallback,
         onUploadProgress: ({ percentage }) => {
           setUploadProgress(percentage);
         },

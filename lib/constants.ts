@@ -26,6 +26,7 @@ export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB limit
  * - Validated both client-side (dropzone) and server-side (API route)
  */
 export const ALLOWED_AUDIO_TYPES = [
+  "application/octet-stream", // Browsers often use this when File.type is unknown
   "audio/mpeg", // MP3 (standard)
   "audio/mp3", // MP3 (alternate)
   "audio/mp4", // M4A (standard)
