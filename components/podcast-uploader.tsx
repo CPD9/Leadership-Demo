@@ -41,6 +41,13 @@ import { UploadProgress } from "@/components/upload-progress";
 import { estimateDurationFromSize, getAudioDuration } from "@/lib/audio-utils";
 import type { UploadStatus } from "@/lib/types";
 
+/** Storage key for Vercel Blob only — must avoid commas and other chars the API rejects in pathname. */
+function blobStoragePathname(file: File): string {
+  const m = /\.([a-zA-Z0-9]+)$/.exec(file.name);
+  const ext = m ? m[1].toLowerCase() : "bin";
+  return `${crypto.randomUUID()}.${ext}`;
+}
+
 export function PodcastUploader() {
   const router = useRouter();
   const { userId } = useAuth(); // Clerk authentication
@@ -121,7 +128,7 @@ export function PodcastUploader() {
             : ext === "m4a"
               ? "audio/mp4"
               : "application/octet-stream";
-      const blob = await upload(selectedFile.name, selectedFile, {
+      const blob = await upload(blobStoragePathname(selectedFile), selectedFile, {
         access: "public",
         handleUploadUrl: "/api/upload",
         contentType: selectedFile.type || contentTypeFallback,
