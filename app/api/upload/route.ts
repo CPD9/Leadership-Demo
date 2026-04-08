@@ -40,19 +40,17 @@ export async function POST(request: Request): Promise<NextResponse> {
       maxFileSize = PLAN_LIMITS.pro.maxFileSize;
     }
 
-    // Generate pre-signed upload URL with plan-based constraints
-    // Requires BLOB_READ_WRITE_TOKEN (see .env.example)
+    // Generate client token for direct upload.
+    // addRandomSuffix: false — pathname is already a UUID from the client (random suffix caused PUT 400s with some tokens).
+    // No onUploadCompleted — avoids callback URL / token edge cases on Vercel; finalize in app after upload instead.
     const jsonResponse = await handleUpload({
       body,
       request,
       onBeforeGenerateToken: async () => ({
         allowedContentTypes: ALLOWED_AUDIO_TYPES,
-        addRandomSuffix: true,
+        addRandomSuffix: false,
         maximumSizeInBytes: maxFileSize,
       }),
-      onUploadCompleted: async ({ blob }) => {
-        console.log("Upload completed:", blob.url);
-      },
     });
 
     return NextResponse.json(jsonResponse);
