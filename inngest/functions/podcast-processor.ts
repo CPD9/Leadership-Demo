@@ -113,36 +113,23 @@ export const podcastProcessor = inngest.createFunction(
       const jobs: Promise<any>[] = [];
       const jobNames: string[] = [];
 
-      // Summary - available to all plans
       jobs.push(generateSummary(step, transcript));
       jobNames.push("summary");
 
-      // PRO and ULTRA features
-      if (plan === "pro" || plan === "ultra") {
-        jobs.push(generateSocialPosts(step, transcript));
-        jobNames.push("socialPosts");
+      jobs.push(generateSocialPosts(step, transcript));
+      jobNames.push("socialPosts");
 
-        jobs.push(generateTitles(step, transcript));
-        jobNames.push("titles");
+      jobs.push(generateTitles(step, transcript));
+      jobNames.push("titles");
 
-        jobs.push(generateHashtags(step, transcript));
-        jobNames.push("hashtags");
-      } else {
-        console.log(`Skipping social posts, titles, hashtags for ${plan} plan`);
-      }
+      jobs.push(generateHashtags(step, transcript));
+      jobNames.push("hashtags");
 
-      // ULTRA-only features
-      if (plan === "ultra") {
-        jobs.push(generateKeyMoments(transcript));
-        jobNames.push("keyMoments");
+      jobs.push(generateKeyMoments(transcript));
+      jobNames.push("keyMoments");
 
-        jobs.push(generateYouTubeTimestamps(step, transcript));
-        jobNames.push("youtubeTimestamps");
-      } else {
-        console.log(
-          `Skipping key moments and YouTube timestamps for ${plan} plan`
-        );
-      }
+      jobs.push(generateYouTubeTimestamps(step, transcript));
+      jobNames.push("youtubeTimestamps");
 
       // Run all enabled jobs in parallel
       const results = await Promise.allSettled(jobs);

@@ -34,16 +34,7 @@ export const retryJobFunction = inngest.createFunction(
       Object.entries(FEATURE_TO_JOB_MAP).map(([k, v]) => [v, k])
     );
 
-    // Check if user has access to this feature with current plan
     const featureKey = jobToFeature[job];
-    if (
-      featureKey &&
-      !planHasFeature(currentUserPlan, featureKey as FeatureName)
-    ) {
-      throw new Error(
-        `This feature (${job}) is not available on your current plan. Please upgrade to access it.`
-      );
-    }
 
     // Log if this is an upgrade scenario
     if (originalUserPlan !== currentUserPlan) {
@@ -68,15 +59,8 @@ export const retryJobFunction = inngest.createFunction(
       );
     }
 
-    // Job-specific validation for jobs that require chapters
-    const jobsRequiringChapters = ["keyMoments", "youtubeTimestamps"];
-    if (jobsRequiringChapters.includes(job)) {
-      if (!transcript.chapters || transcript.chapters.length === 0) {
-        throw new Error(
-          `Cannot generate ${job}: transcript has no chapters. This podcast may be too short or lack distinct topics for chapter detection.`
-        );
-      }
-    }
+    // Jobs that use chapters (keyMoments, youtubeTimestamps) gracefully
+    // return empty results when no chapters are available, so no pre-validation needed.
 
     // Other jobs (summary, socialPosts, titles, hashtags) can work with just text
     // They will use chapters if available for better context, but don't require them

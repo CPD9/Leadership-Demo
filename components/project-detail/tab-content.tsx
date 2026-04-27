@@ -42,25 +42,7 @@ export function TabContent({
   jobName,
   emptyMessage = "No data available",
 }: TabContentProps) {
-  // Helper to wrap content with feature gating if needed
-  const wrapWithProtect = (content: React.ReactNode) => {
-    if (!feature || !featureName) return content;
-
-    return (
-      <Protect
-        feature={feature}
-        fallback={
-          <UpgradePrompt
-            feature={featureName}
-            featureKey={feature}
-            currentPlan="free"
-          />
-        }
-      >
-        {content}
-      </Protect>
-    );
-  };
+  const wrapWithProtect = (content: React.ReactNode) => content;
 
   // Loading state
   if (isLoading) {

@@ -61,11 +61,9 @@ export async function generateYouTubeTimestamps(
   // Use AssemblyAI chapters for accurate timing
   const chapters = transcript.chapters || [];
 
-  // Validation: Timestamps require chapter timing data
   if (!chapters || chapters.length === 0) {
-    throw new Error(
-      "No chapters available from AssemblyAI. Cannot generate YouTube timestamps."
-    );
+    console.log("No chapters from AssemblyAI — returning empty timestamps");
+    return [];
   }
 
   // YouTube limit: 100 timestamps maximum

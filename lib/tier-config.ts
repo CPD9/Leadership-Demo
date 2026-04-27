@@ -21,9 +21,9 @@ export interface PlanLimits {
  */
 export const PLAN_LIMITS: Record<PlanName, PlanLimits> = {
   free: {
-    maxProjects: 3, // lifetime, including deleted
-    maxFileSize: 10 * 1024 * 1024, // 10MB
-    maxDuration: 600, // 10 minutes
+    maxProjects: null, // unlimited during development
+    maxFileSize: 3 * 1024 * 1024 * 1024, // 3GB — no restriction during development
+    maxDuration: null, // unlimited during development
   },
   pro: {
     maxProjects: 30, // active projects only
@@ -62,7 +62,15 @@ export type FeatureName = (typeof FEATURES)[keyof typeof FEATURES];
  * Note: Transcription is available to ALL plans as core functionality
  */
 export const PLAN_FEATURES: Record<PlanName, FeatureName[]> = {
-  free: [FEATURES.SUMMARY],
+  free: [
+    FEATURES.SUMMARY,
+    FEATURES.SOCIAL_POSTS,
+    FEATURES.TITLES,
+    FEATURES.HASHTAGS,
+    FEATURES.YOUTUBE_TIMESTAMPS,
+    FEATURES.KEY_MOMENTS,
+    FEATURES.SPEAKER_DIARIZATION,
+  ],
   pro: [
     FEATURES.SUMMARY,
     FEATURES.SOCIAL_POSTS,

@@ -41,7 +41,7 @@ export function GenerateMissingCard({
         {message || "No content available"}
       </p>
       <p className="text-sm text-gray-500">
-        It looks like this project was processed before you upgraded.
+        This content hasn&apos;t been generated yet for this project.
       </p>
       <Button
         onClick={handleGenerate}
@@ -49,11 +49,8 @@ export function GenerateMissingCard({
         className="gradient-emerald text-white hover-glow shadow-lg px-6 py-3 gap-2"
       >
         <Sparkles className="h-5 w-5" />
-        {isGenerating ? "Generating..." : "Generate All Missing Features"}
+        {isGenerating ? "Generating..." : "Generate Missing Features"}
       </Button>
-      <p className="text-xs text-gray-500">
-        This will generate all features available in your current plan
-      </p>
     </div>
   );
 }

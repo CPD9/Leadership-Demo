@@ -71,6 +71,7 @@ export async function transcribeWithAssemblyAI(
     // This API call blocks until transcription is complete (can take minutes for long files)
     const transcriptResponse = await assemblyai.transcripts.transcribe({
       audio: audioUrl, // Public URL - AssemblyAI downloads the file
+      speech_models: ["universal-3-pro", "universal-2"],
       speaker_labels: true, // Always enable speaker diarization (UI-gated for ULTRA)
       auto_chapters: true, // Detect topic changes automatically
       format_text: true, // Add punctuation and capitalization
